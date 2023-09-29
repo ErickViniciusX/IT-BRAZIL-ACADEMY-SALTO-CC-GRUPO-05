@@ -3,15 +3,13 @@ import { useRouter } from 'next/router'
 import { mutate } from 'swr'
 
 interface FormData {
-  name: string
-  owner_name: string
-  species: string
-  age: number
-  poddy_trained: boolean
-  diet: string[]
-  image_url: string
-  likes: string[]
-  dislikes: string[]
+  numero_serie: string
+  nome: string
+  quantidade: number
+  data_aquisicao: string
+  fornecedor: string
+  unidade: string
+  status: boolean
 }
 
 interface Error {
@@ -23,26 +21,24 @@ interface Error {
 
 type Props = {
   formId: string
-  petForm: FormData
+  produtosForm: FormData
   forNewPet?: boolean
 }
 
-const Form = ({ formId, petForm, forNewPet = true }: Props) => {
+const Form = ({ formId, produtosForm, forNewPet = true }: Props) => {
   const router = useRouter()
   const contentType = 'application/json'
   const [errors, setErrors] = useState({})
   const [message, setMessage] = useState('')
 
   const [form, setForm] = useState({
-    name: petForm.name,
-    owner_name: petForm.owner_name,
-    species: petForm.species,
-    age: petForm.age,
-    poddy_trained: petForm.poddy_trained,
-    diet: petForm.diet,
-    image_url: petForm.image_url,
-    likes: petForm.likes,
-    dislikes: petForm.dislikes,
+    numero_serie: produtosForm.numero_serie,
+    nome: produtosForm.nome,
+    quantidade: produtosForm.quantidade,
+    data_aquisicao: produtosForm.data_aquisicao,
+    fornecedor: produtosForm.fornecedor,
+    unidade: produtosForm.unidade,
+    status: produtosForm.status,
   })
 
   /* The PUT method edits an existing entry in the mongodb database. */
@@ -75,6 +71,7 @@ const Form = ({ formId, petForm, forNewPet = true }: Props) => {
 
   /* The POST method adds a new entry in the mongodb database. */
   const postData = async (form: FormData) => {
+      form.quantidade = Number(form.quantidade);
     try {
       const res = await fetch('/api/pets', {
         method: 'POST',
@@ -87,6 +84,7 @@ const Form = ({ formId, petForm, forNewPet = true }: Props) => {
 
       // Throw error with status code in case Fetch API req failed
       if (!res.ok) {
+        console.log(res)
         throw new Error(res.status.toString())
       }
 
@@ -101,7 +99,7 @@ const Form = ({ formId, petForm, forNewPet = true }: Props) => {
   ) => {
     const target = e.target
     const value =
-      target.name === 'poddy_trained'
+      target.name === 'status'
         ? (target as HTMLInputElement).checked
         : target.value
     const name = target.name
@@ -113,108 +111,89 @@ const Form = ({ formId, petForm, forNewPet = true }: Props) => {
   }
 
   /* Makes sure pet info is filled for pet name, owner name, species, and image url*/
-  const formValidate = () => {
-    let err: Error = {}
-    if (!form.name) err.name = 'Name is required'
-    if (!form.owner_name) err.owner_name = 'Owner is required'
-    if (!form.species) err.species = 'Species is required'
-    if (!form.image_url) err.image_url = 'Image URL is required'
-    return err
-  }
+  // const formValidate = () => {
+  //   let err: Error = {}
+  //   if (!form.numero_serie) err.numero_serie = 'Name is required'
+  //   if (!form.owner_name) err.owner_name = 'Owner is required'
+  //   if (!form.species) err.species = 'Species is required'
+  //   if (!form.image_url) err.image_url = 'Image URL is required'
+  //   return err
+  // }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const errs = formValidate()
+    // const errs = formValidate()
 
-    if (Object.keys(errs).length === 0) {
       forNewPet ? postData(form) : putData(form)
-    } else {
-      setErrors({ errs })
-    }
   }
 
   return (
     <>
       <form id={formId} onSubmit={handleSubmit}>
-        <label htmlFor="name">Name</label>
+        <label htmlFor="numero_serie">Número de Série</label>
         <input
           type="text"
           maxLength={20}
-          name="name"
-          value={form.name}
+          name="numero_serie"
+          value={form.numero_serie}
           onChange={handleChange}
           required
         />
 
-        <label htmlFor="owner_name">Owner</label>
+        <label htmlFor="nome">Nome</label>
         <input
           type="text"
           maxLength={20}
-          name="owner_name"
-          value={form.owner_name}
+          name="nome"
+          value={form.nome}
           onChange={handleChange}
           required
         />
 
-        <label htmlFor="species">Species</label>
-        <input
-          type="text"
-          maxLength={30}
-          name="species"
-          value={form.species}
-          onChange={handleChange}
-          required
-        />
-
-        <label htmlFor="age">Age</label>
+        <label htmlFor="quantidade">Quantidade</label>
         <input
           type="number"
-          name="age"
-          value={form.age}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="poddy_trained">Potty Trained</label>
-        <input
-          type="checkbox"
-          name="poddy_trained"
-          checked={form.poddy_trained}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="diet">Diet</label>
-        <textarea
-          name="diet"
-          maxLength={60}
-          value={form.diet}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="image_url">Image URL</label>
-        <input
-          type="url"
-          name="image_url"
-          value={form.image_url}
+          maxLength={30}
+          name="quantidade"
+          value={form.quantidade}
           onChange={handleChange}
           required
         />
 
-        <label htmlFor="likes">Likes</label>
-        <textarea
-          name="likes"
-          maxLength={60}
-          value={form.likes}
+        <label htmlFor="data_aquisicao">Data de Aquisicao</label>
+        <input
+          type="text"
+          name="data_aquisicao"
+          value={form.data_aquisicao}
           onChange={handleChange}
+          required
         />
 
-        <label htmlFor="dislikes">Dislikes</label>
+        <label htmlFor="fornecedor">Fornecedor</label>
         <textarea
-          name="dislikes"
+          name="fornecedor"
           maxLength={60}
-          value={form.dislikes}
+          value={form.fornecedor}
           onChange={handleChange}
+          required
         />
 
+        <label htmlFor="unidade">Unidade</label>
+        <input
+          type="text"
+          name="unidade"
+          value={form.unidade}
+          onChange={handleChange}
+          required
+        />
+
+        <label htmlFor="status">Status</label>
+        <input
+          type="checkbox"
+          name="status"
+          checked={form.status}
+          onChange={handleChange}
+        />
         <button type="submit" className="btn">
           Submit
         </button>

@@ -11,7 +11,7 @@ export interface Produtos extends mongoose.Document {
 }
 
 /* Produtoschema will correspond to a collection in your MongoDB database. */
-const ProdutosSchema = new mongoose.Schema<Produtos>({
+const ProdutoSchema = new mongoose.Schema<Produtos>({
   numero_serie: {
     type: String,
     required: [true, 'Insira o número de série'],
@@ -43,4 +43,4 @@ const ProdutosSchema = new mongoose.Schema<Produtos>({
   }
 })
 
-export default mongoose.models.Produtos || mongoose.model<Produtos>('Produtos', ProdutosSchema)
+export default mongoose.models.Produto || mongoose.model<Produtos>('Produto', ProdutoSchema)
