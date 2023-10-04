@@ -15,7 +15,7 @@ const ProdutoSchema = new mongoose.Schema<Produtos>({
   numero_serie: {
     type: String,
     required: [true, 'Insira o número de série'],
-    maxlength: [6, 'Você precisa inserir um número de série que contenha no mínimo 6 caracteres']
+    minlength: [6, 'Você precisa inserir um número de série que contenha no mínimo 6 caracteres']
   },
   nome: {
     type: String,
