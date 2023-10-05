@@ -162,7 +162,7 @@ const Form = ({ formId, produtosForm, forNewPet = true }: Props) => {
 
         <label htmlFor="data_aquisicao">Data de Aquisicao</label>
         <input
-          type="text"
+          type="date"
           name="data_aquisicao"
           value={form.data_aquisicao}
           onChange={handleChange}
@@ -187,7 +187,7 @@ const Form = ({ formId, produtosForm, forNewPet = true }: Props) => {
           required
         />
 
-        <label htmlFor="status">Status</label>
+        <label htmlFor="status">Inativo</label>
         <input
           type="checkbox"
           name="status"
