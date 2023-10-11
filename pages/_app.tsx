@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
         <img
           id="title"
-          src="Logo.png"
+          src="logo.png"
           alt="pet care logo"
         ></img>
       </div>
