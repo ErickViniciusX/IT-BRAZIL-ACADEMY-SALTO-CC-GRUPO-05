@@ -8,18 +8,19 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Pet Care App</title>
+        <title>StockMaster</title>
+        <link rel="shortcut icon" href="icon.ico" />
       </Head>
 
       <div className="top-bar">
         <div className="nav">
-          <Link href="/">Home</Link>
-          <Link href="/new">Add Pet</Link>
+          <Link href="/">Inicio</Link>
+          <Link href="/new">Adicionar</Link>
         </div>
 
         <img
           id="title"
-          src="https://upload.wikimedia.org/wikipedia/commons/1/1f/Pet_logo_with_flowers.png"
+          src="logo.png"
           alt="pet care logo"
         ></img>
       </div>
@@ -31,3 +32,4 @@ function MyApp({ Component, pageProps }: AppProps) {
 }
 
 export default MyApp
+
