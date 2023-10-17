@@ -1,7 +1,10 @@
 import Link from 'next/link'
 import dbConnect from '../lib/dbConnect'
+import { Edit2, Eye } from 'lucide-react'
 import produto, { Produtos } from '../models/Produto'
 import { GetServerSideProps } from 'next'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 
 type Props = {
   Produtos: Produtos[]
@@ -9,27 +12,39 @@ type Props = {
 
 const Index = ({ Produtos }: Props) => {
   return (
-    <>
-      {Produtos.map((produto) => (
-        <div key={produto._id}>
-          <div className="card">
-            <h5 className="produto-name">{produto.numero_serie}</h5>
-            <div className="main-content">
-              <p className="produto-name">{produto.nome}</p>
-              <p className="owner">Fornecedor: {produto.fornecedor}</p>
-              <div className="btn-container">
-                <Link href={{ pathname: '/[id]/edit', query: { id: produto._id } }}>
-                  <button className="btn edit">Edit</button>
-                </Link>
-                <Link href={{ pathname: '/[id]', query: { id: produto._id } }}>
-                  <button className="btn view">View</button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
-    </>
+    <div className='flex flex-row'>
+      {Produtos.map((produto) => {
+        const dateFormated = new Date(produto.data_aquisicao).toLocaleDateString('pt-BR')
+        
+      return (
+        <Card key={produto._id} className='m-4 rounded-md border p-2'>
+          <CardHeader>
+            <CardTitle className='text-md'>{produto.nome}</CardTitle>
+            <CardDescription>{produto.numero_serie} - {produto.fornecedor}</CardDescription>
+          </CardHeader>
+          <CardContent className='text-gray-500 text-sm text-left'>
+            <p>{dateFormated}</p>
+            <p>{produto.quantidade} {produto.unidade}</p>
+          </CardContent>
+          <CardFooter className="gap-4">
+            <Button variant='outline' asChild>
+              <Link className="gap-2" href={{ pathname: '/[id]/edit', query: { id: produto._id } }}>
+                <Edit2 size={16} />
+                Editar
+              </Link>
+            </Button>
+            <Button variant="default" asChild>
+              <Link className="gap-2" href={{ pathname: '/[id]', query: { id: produto._id } }}>
+                <Eye size={16} /> 
+                Visualizar
+              </Link>
+            </Button>
+          </CardFooter>
+
+        </Card>
+      )}
+      )}
+    </div>
   )
 }
 
