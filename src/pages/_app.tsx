@@ -1,5 +1,6 @@
 import '../css/style.css'
 import '../css/form.css'
+import '../css/global.css'
 import Head from 'next/head'
 import Link from 'next/link'
 import type { AppProps } from 'next/app'
