@@ -1,36 +1,20 @@
 import '../css/style.css'
 import '../css/form.css'
 import '../css/global.css'
-import Head from 'next/head'
-import Link from 'next/link'
+import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <>
-      <Head>
-        <title>StockMaster</title>
-        <link rel="shortcut icon" href="icon.ico" />
-      </Head>
-
-      <div className="top-bar">
-        <div className="nav">
-          <Link href="/">Inicio</Link>
-          <Link href="/new">Adicionar</Link>
-        </div>
-
-        <img
-          id="title"
-          src="logo.png"
-          alt="pet care logo"
-        ></img>
-      </div>
-      <div className="wrapper grid">
-        <Component {...pageProps} />
-      </div>
-    </>
-  )
+export type NextPageWithLayout = NextPage & {
+  getLayout?: (page: React.ReactElement) => React.ReactNode
 }
 
-export default MyApp
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout
+}
 
+export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  // Use the layout defined at the page level, if available
+  const getLayout = Component.getLayout ?? ((page) => page)
+
+  return getLayout(<Component {...pageProps} />)
+}

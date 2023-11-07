@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import Form from '../../components/Form'
+import MainLayout from '@/layouts/MainLayout'
 
 const fetcher = (url: string) =>
   fetch(url)
@@ -31,6 +32,13 @@ const EditPet = () => {
   }
 
   return <Form formId="edit-pet-form" produtosForm={produtosForm} forNewPet={false} />
+}
+EditPet.getLayout = function getLayout (page: React.ReactElement) {
+  return (
+    <MainLayout>
+      {page}
+    </MainLayout>
+  )
 }
 
 export default EditPet

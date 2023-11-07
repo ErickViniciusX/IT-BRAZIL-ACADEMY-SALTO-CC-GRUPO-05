@@ -5,6 +5,7 @@ import dbConnect from '../../lib/dbConnect'
 import Produto, { Produtos } from '../../models/Produto'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { ParsedUrlQuery } from 'querystring'
+import MainLayout from '@/layouts/MainLayout'
 
 interface Params extends ParsedUrlQuery {
   id: string
@@ -82,5 +83,14 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
     },
   }
 }
+
+ProdutoPage.getLayout = function getLayout (page: React.ReactElement) {
+  return (
+    <MainLayout>
+      {page}
+    </MainLayout>
+  )
+}
+
 
 export default ProdutoPage

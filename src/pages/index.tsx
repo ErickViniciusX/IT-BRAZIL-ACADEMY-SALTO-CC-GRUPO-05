@@ -5,6 +5,7 @@ import produto, { Produtos } from '../models/Produto'
 import { GetServerSideProps } from 'next'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import MainLayout from '@/layouts/MainLayout'
 
 type Props = {
   Produtos: Produtos[]
@@ -45,6 +46,14 @@ const Index = ({ Produtos }: Props) => {
       )}
       )}
     </div>
+  )
+}
+
+Index.getLayout = function getLayout (page: React.ReactElement) {
+  return (
+    <MainLayout>
+      {page}
+    </MainLayout>
   )
 }
 
