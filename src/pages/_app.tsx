@@ -4,6 +4,7 @@ import '../css/global.css'
 import Head from 'next/head'
 import Link from 'next/link'
 import type { AppProps } from 'next/app'
+import CreateProduct from '@/components/CreateProduct'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -16,7 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <div className="top-bar">
         <div className="nav">
           <Link href="/">Inicio</Link>
-          <Link href="/new">Adicionar</Link>
+          <CreateProduct />
         </div>
 
         <img

@@ -4,6 +4,8 @@ export interface Produtos extends mongoose.Document {
   numero_serie: string
   nome: string
   quantidade: number
+  quantidade_minima: number
+  quantidade_maxima: number
   data_aquisicao: string
   fornecedor: string
   unidade: string
@@ -25,6 +27,12 @@ const ProdutoSchema = new mongoose.Schema<Produtos>({
   quantidade: {
     type: Number,
     required: [true, "Quantidade é um campo obrigatório"]
+  },
+  quantidade_minima: {
+    type: Number
+  },
+  quantidade_maxima: {
+    type: Number
   },
   data_aquisicao: {
     type: String,
