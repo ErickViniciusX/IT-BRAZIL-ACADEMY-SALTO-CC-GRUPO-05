@@ -16,6 +16,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Switch } from './ui/switch'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from './ui/sheet'
 import { useRouter } from 'next/router'
+import { Produtos } from '@/models/Produto'
+
+type CardProductProps = {
+  produto: Produtos
+}
 
 const formSchema = z.object({
   numero_serie: z.string().min(2, { message: "O código precisa ter no mínimo 2 caracteres" }).max(50, { message: "O código precisa ter no máximo 50 caracteres" }),
@@ -33,22 +38,22 @@ const formSchema = z.object({
   status: z.boolean(),
 })
 
-export default function CreateProduct() {
+export default function EditProduct({ produto }: CardProductProps) {
   const router = useRouter();
   const [isOpen, setIsOpen] = React.useState(false)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      numero_serie: '',
-      nome: '',
-      quantidade: 0,
-      quantidade_minima: 5,
-      quantidade_maxima: 30,
-      data_aquisicao: new Date(),
-      fornecedor: '',
-      unidade: '',
-      status: true,
-    },
+    values: {
+      numero_serie: produto.numero_serie,
+      nome: produto.nome,
+      quantidade: produto.quantidade,
+      quantidade_minima: produto.quantidade_minima,
+      quantidade_maxima: produto.quantidade_maxima,
+      data_aquisicao: new Date(produto.data_aquisicao),
+      fornecedor: produto.fornecedor,
+      unidade: produto.unidade,
+      status: produto.status,
+    }
   })
 
   const minimumValue = form.watch('quantidade_minima');
@@ -60,8 +65,8 @@ export default function CreateProduct() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const res = await fetch('/api/pets', {
-        method: 'POST',
+      const res = await fetch(`/api/pets/${produto._id}`, {
+        method: 'PUT',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -83,30 +88,16 @@ export default function CreateProduct() {
 
   return (
     <Sheet open={isOpen} onOpenChange={handleToggleSheet}>
-      <Button onClick={handleToggleSheet}>Cadastro</Button>
+      <Button variant={'outline'} onClick={handleToggleSheet}>Editar</Button>
       <SheetContent className='overflow-y-scroll'>
         <SheetHeader>
-          <SheetTitle>Cadastro de um novo produto</SheetTitle>
+          <SheetTitle>Edite o cadastro de um produto</SheetTitle>
           <SheetDescription>
-            Preencha os campos abaixo para cadastrar um novo produto. Se atente aos campos obrigatórios.
+            Edite as informações do produto. Caso queira, você pode desabilitar o produto.
           </SheetDescription>
         </SheetHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full my-4">
-            <FormField
-              control={form.control}
-              name="numero_serie"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Número de série</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Número de série" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <FormField
               control={form.control}
               name="nome"
@@ -165,62 +156,6 @@ export default function CreateProduct() {
 
             <FormField
               control={form.control}
-              name="data_aquisicao"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Data de entrada</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "PPP", { locale: ptBR })
-                          ) : (
-                            <span>Selecione uma data</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        locale={ptBR}
-                        disabled={(date) =>
-                          date < new Date("1900-01-01")
-                        }
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="fornecedor"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Fornecedor</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Fornecedor" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
               name="unidade"
               render={({ field }) => (
                 <FormItem>
@@ -265,7 +200,7 @@ export default function CreateProduct() {
               )}
             />
 
-            <Button type="submit">Cadastrar</Button>
+            <Button type="submit">Salvar alterações</Button>
           </form>
         </Form>
       </SheetContent>

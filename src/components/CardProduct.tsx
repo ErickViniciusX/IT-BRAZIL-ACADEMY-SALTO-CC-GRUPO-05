@@ -3,16 +3,16 @@ import React, { useMemo } from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card'
 import { Button } from './ui/button'
 import Link from 'next/link'
-import { Edit2, Eye } from 'lucide-react'
+import { Edit2, Eye, Delete, LucideDelete, XIcon, Trash, BatteryLow } from 'lucide-react'
 import { Progress } from './ui/progress'
 import { Badge } from './ui/badge'
+import EditProduct from './EditProduct'
 
 type CardProductProps = {
   produto: Produtos
 }
 
 type StockIndication = {
-  variant: 'default' | 'secondary' | 'destructive'
   badgeMessage: string
 }
 
@@ -24,25 +24,6 @@ export default function CardProduct({ produto }: CardProductProps) {
     return 100 * produto.quantidade / produto.quantidade_maxima
   }, [produto.quantidade, produto.quantidade_maxima]);
 
-  const stockIndication: StockIndication = useMemo(() => {
-    if (produto.quantidade <= produto.quantidade_minima) {
-      return {
-        variant: 'destructive',
-        badgeMessage: 'Estoque baixo'
-      }
-    } else if (produto.quantidade > produto.quantidade_minima && produto.quantidade + 5 < produto.quantidade_maxima) {
-      return {
-        variant: 'secondary',
-        badgeMessage: 'Estoque médio'
-      }
-    }
-    return {
-      variant: 'default',
-      badgeMessage: 'Estoque alto'
-    }
-
-  }, [produto.quantidade, produto.quantidade_maxima, produto.quantidade_minima]);
-
   return (
     <Card className='m-4 rounded-md border p-2'>
       <CardHeader>
@@ -51,7 +32,12 @@ export default function CardProduct({ produto }: CardProductProps) {
           {produto.numero_serie} - {produto.fornecedor}
         </CardDescription>
         <CardDescription>
-          <Badge variant={stockIndication.variant}>{stockIndication.badgeMessage}</Badge>
+          {produto.quantidade < produto.quantidade_minima && (
+            <div className='flex flex-row items-center gap-3'>
+              <BatteryLow color='#fb923c' />
+              <h4 className="text-sm font-medium leading-none text-orange-400">Atenção ao baixo estoque</h4>
+            </div>
+          )}
         </CardDescription>
       </CardHeader>
       <CardContent className='text-gray-500 text-sm text-left'>
@@ -60,17 +46,9 @@ export default function CardProduct({ produto }: CardProductProps) {
         {showProgressBar && <Progress className={"mt-2"} value={stockCount} />}
       </CardContent>
       <CardFooter className="gap-4">
-        <Button variant='outline' asChild>
-          <Link className="gap-2" href={{ pathname: '/[id]/edit', query: { id: produto._id } }}>
-            <Edit2 size={16} />
-            Editar
-          </Link>
-        </Button>
-        <Button variant="default" asChild>
-          <Link className="gap-2" href={{ pathname: '/[id]', query: { id: produto._id } }}>
-            <Eye size={16} />
-            Visualizar
-          </Link>
+        <EditProduct produto={produto} />
+        <Button className='w-full' variant="destructive">
+          Excluir
         </Button>
       </CardFooter>
 
