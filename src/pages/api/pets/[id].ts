@@ -1,5 +1,5 @@
+import dbConnect from '@/lib/dbConnect'
 import { NextApiRequest, NextApiResponse } from 'next'
-import dbConnect from '../../../lib/dbConnect'
 import Pet from '../../../models/Produto'
 
 export default async function handler(
