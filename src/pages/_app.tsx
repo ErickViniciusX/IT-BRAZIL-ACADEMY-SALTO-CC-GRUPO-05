@@ -3,6 +3,7 @@ import '../css/form.css'
 import '../css/global.css'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
+import CreateProduct from '@/components/CreateProduct'
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode
