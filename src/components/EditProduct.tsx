@@ -56,7 +56,6 @@ export default function EditProduct({ produto }: CardProductProps) {
     }
   })
 
-  const minimumValue = form.watch('quantidade_minima');
   const maximumValue = form.watch('quantidade_maxima');
 
   const handleToggleSheet = () => {
@@ -119,7 +118,7 @@ export default function EditProduct({ produto }: CardProductProps) {
                 <FormItem>
                   <FormLabel>Quantidade</FormLabel>
                   <FormControl>
-                    <Input type='number' min={minimumValue} max={maximumValue} placeholder="Quantidade" {...field} />
+                    <Input type='number' max={maximumValue} placeholder="Quantidade" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
