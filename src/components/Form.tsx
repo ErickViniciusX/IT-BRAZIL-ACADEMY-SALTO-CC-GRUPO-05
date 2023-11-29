@@ -71,7 +71,7 @@ const Form = ({ formId, produtosForm, forNewPet = true }: Props) => {
 
   /* The POST method adds a new entry in the mongodb database. */
   const postData = async (form: FormData) => {
-      form.quantidade = Number(form.quantidade);
+    form.quantidade = Number(form.quantidade);
     try {
       const res = await fetch('/api/pets', {
         method: 'POST',
@@ -124,7 +124,7 @@ const Form = ({ formId, produtosForm, forNewPet = true }: Props) => {
     e.preventDefault()
     // const errs = formValidate()
 
-      forNewPet ? postData(form) : putData(form)
+    forNewPet ? postData(form) : putData(form)
   }
 
   return (

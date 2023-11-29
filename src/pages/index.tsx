@@ -1,3 +1,4 @@
+'use client'
 import dbConnect from '../lib/dbConnect'
 import produto, { Produtos } from '../models/Produto'
 import { GetServerSideProps } from 'next'
