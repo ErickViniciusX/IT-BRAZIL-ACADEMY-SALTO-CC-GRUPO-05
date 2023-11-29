@@ -88,7 +88,7 @@ export default function EditProduct({ produto }: CardProductProps) {
 
   return (
     <Sheet open={isOpen} onOpenChange={handleToggleSheet}>
-      <Button variant={'outline'} onClick={handleToggleSheet}>Editar</Button>
+      <Button className='w-full' variant={'outline'} onClick={handleToggleSheet}>Editar</Button>
       <SheetContent className='overflow-y-scroll'>
         <SheetHeader>
           <SheetTitle>Edite o cadastro de um produto</SheetTitle>
