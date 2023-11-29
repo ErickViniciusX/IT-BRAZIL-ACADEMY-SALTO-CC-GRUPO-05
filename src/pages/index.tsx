@@ -3,6 +3,8 @@ import dbConnect from '../lib/dbConnect'
 import produto, { Produtos } from '../models/Produto'
 import { GetServerSideProps } from 'next'
 import CardProduct from '@/components/CardProduct'
+import MainLayout from '@/layouts/MainLayout'
+import nookies from 'nookies'
 
 type Props = {
   Produtos: Produtos[]
@@ -24,7 +26,27 @@ const Index = ({ Produtos }: Props) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async () => {
+Index.getLayout = function getLayout(page: React.ReactElement) {
+  return (
+    <MainLayout>
+      {page}
+    </MainLayout>
+  )
+}
+
+/* Retrieves produto(s) data from mongodb database */
+export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
+  const cookies = nookies.get(ctx)
+
+  if (!cookies.isAutenticated) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
   await dbConnect()
 
   const result = await produto.find({})
